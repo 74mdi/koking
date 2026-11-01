@@ -2,25 +2,22 @@
 name = "signal-alt"
 version = "0.1.0"
 edition = "2021"
+description = "Signal Alt — private messenger with liquid glass + Material 3 UI"
+license = "MIT"
+repository = "https://github.com/74mdi/koking"
 
 [dependencies]
 dioxus = { version = "0.5" }
 
-dioxus-desktop = { version = "0.5", optional = true }
-
 [features]
-desktop = ["dioxus-desktop", "dioxus/desktop"]
+default = ["web"]
+web = ["dioxus/web"]
+desktop = ["dioxus/desktop"]
+mobile = ["dioxus/mobile"]
 
 [lib]
-crate-type = ["cdylib", "rlib"]
+crate-type = ["cdylib", "rlib", "staticlib"]
 
 [[bin]]
 name = "signal-alt"
 path = "src/main.rs"
-required-features = ["desktop"]
-
-[profile.release]
-lto = true
-codegen-units = 1
-panic = "abort"
-opt-level = "z"

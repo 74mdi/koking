@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Context Overflow Handoff",
+    "description": "When a turn dies on a context-length or EAC upstream failure, exports the full session log and starts a new chat that continues the task from that export."
+  }
+}

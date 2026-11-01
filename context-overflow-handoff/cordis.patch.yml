@@ -1,0 +1,5 @@
+- insert:
+    - id: context-overflow-handoff
+      name: '@local/context-overflow-handoff'
+      config:
+        exportDir: '.dsh/handoffs'
