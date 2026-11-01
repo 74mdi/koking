@@ -13,9 +13,9 @@ Modern Signal alternative built with [Dioxus 0.5](https://dioxuslabs.com/).
 - Small bundle, low memory
 
 ## Build
-GitHub Actions builds desktop (Linux/macOS/Windows) and Android APK on push to `main`.
+GitHub Actions builds desktop binaries for Linux, macOS, and Windows on pull requests targeting `main`, when run manually, and when a `v*` tag is pushed. Tagged builds are attached to a GitHub Release.
 
 ## Run
 ```bash
-cargo run
+cargo run -p signal-alt --features desktop
 ```

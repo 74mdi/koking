@@ -51,6 +51,7 @@ jobs:
 
       - name: Install Linux deps (WebKitGTK)
         if: runner.os == 'Linux'
+        shell: bash
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -59,9 +60,10 @@ jobs:
             libjavascriptcoregtk-4.1-dev \
             libsoup-3.0-dev \
             libayatana-appindicator3-dev \
-            librsvg2-dev || true
+            librsvg2-dev
 
       - name: Build release
+        shell: bash
         run: |
           if [ -n "${{ matrix.target }}" ]; then
             cargo build --release -p signal-alt --features desktop --target ${{ matrix.target }}
@@ -70,6 +72,7 @@ jobs:
           fi
 
       - name: Package binary
+        shell: bash
         run: |
           mkdir -p dist
           if [ -n "${{ matrix.target }}" ]; then
