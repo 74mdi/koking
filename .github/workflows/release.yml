@@ -85,7 +85,7 @@ jobs:
           if [ "$RUNNER_OS" = "Windows" ]; then
             BIN="${BIN}.exe"
             cp "$BIN" "dist/signal-alt-${{ matrix.artifact }}.exe"
-            zip "dist/signal-alt-${{ matrix.artifact }}.zip" "dist/signal-alt-${{ matrix.artifact }}.exe"
+            python -m zipfile -c "dist/signal-alt-${{ matrix.artifact }}.zip" "dist/signal-alt-${{ matrix.artifact }}.exe"
           else
             cp "$BIN" "dist/signal-alt-${{ matrix.artifact }}"
             tar czf "dist/signal-alt-${{ matrix.artifact }}.tar.gz" "dist/signal-alt-${{ matrix.artifact }}"
