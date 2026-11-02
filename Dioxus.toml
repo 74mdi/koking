@@ -1,8 +1,8 @@
 [application]
-name = "Signal Alt"
+name = "Koking"
 
 [web.app]
-title = "Signal Alt"
+title = "Koking"
 
 [bundle]
 identifier = "com.koking.signalalt"

@@ -1,15 +1,19 @@
 [package]
 name = "signal-alt"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2021"
 description = "Signal Alt — private messenger with liquid glass + Material 3 UI"
 license = "MIT"
 repository = "https://github.com/74mdi/koking"
 
 [package.metadata.deb]
+name = "koking"
 maintainer = "74mdi <97978397+74mdi@users.noreply.github.com>"
 section = "net"
-depends = "$auto"
+depends = "$auto, libwebkit2gtk-4.1-0"
+assets = [
+    ["assets/koking.desktop", "usr/share/applications/koking.desktop", "644"],
+]
 
 [dependencies]
 dioxus = { version = "0.6.3" }

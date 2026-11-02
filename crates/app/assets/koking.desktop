@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Koking
+Comment=Private messaging
+Exec=signal-alt
+Terminal=false
+Categories=Network;InstantMessaging;
+StartupNotify=true

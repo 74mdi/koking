@@ -132,7 +132,7 @@ jobs:
           cargo install cargo-deb --locked
           mkdir -p dist
           cargo deb --no-build -p signal-alt
-          cp target/debian/signal-alt_*.deb dist/
+          cp target/debian/koking_*.deb dist/
 
       - name: Upload Debian package
         uses: actions/upload-artifact@v4

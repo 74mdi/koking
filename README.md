@@ -1,6 +1,6 @@
-# Signal Alt
+# Koking
 
-Modern Signal alternative built with [Dioxus 0.5](https://dioxuslabs.com/).
+Modern Signal alternative built with [Dioxus](https://dioxuslabs.com/).
 
 ## UI
 - Liquid glass (backdrop blur, frosted glass)
@@ -13,7 +13,7 @@ Modern Signal alternative built with [Dioxus 0.5](https://dioxuslabs.com/).
 - Small bundle, low memory
 
 ## Build
-GitHub Actions builds a Debian 13 `.deb` package, a sideloadable Android APK, a static web bundle, and macOS and Windows desktop binaries on pull requests targeting `main`, when run manually, and when a `v*` tag is pushed. Tagged builds are attached to a GitHub Release. The Android artifact is debug-signed for testing and is not a Play Store release.
+GitHub Actions builds a Debian 13 `.deb` package named Koking with an application launcher, a sideloadable Android APK, a static web bundle, and macOS and Windows desktop binaries on pull requests targeting `main`, when run manually, and when a `v*` tag is pushed. Tagged builds are attached to a GitHub Release. The Android artifact is debug-signed for testing and is not a Play Store release.
 
 ## Run
 ```bash
