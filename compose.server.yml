@@ -1,0 +1,18 @@
+services:
+  koking-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    restart: unless-stopped
+    environment:
+      KOKING_BIND: 0.0.0.0:3000
+      KOKING_DATABASE_URL: sqlite:///data/koking.db?mode=rwc
+      KOKING_ALLOWED_ORIGINS: ${KOKING_ALLOWED_ORIGINS:-http://127.0.0.1:8080,http://localhost:8080}
+      RUST_LOG: info,tower_http=info
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - koking-data:/data
+
+volumes:
+  koking-data:

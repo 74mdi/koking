@@ -1,0 +1,21 @@
+FROM rust:1-bookworm AS builder
+WORKDIR /src
+COPY Cargo.toml Cargo.lock ./
+COPY crates ./crates
+COPY Dioxus.toml ./Dioxus.toml
+RUN cargo build --release --locked -p koking-server
+
+FROM debian:bookworm-slim
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd --system --create-home --home-dir /data koking
+WORKDIR /data
+COPY --from=builder /src/target/release/koking-server /usr/local/bin/koking-server
+ENV KOKING_BIND=0.0.0.0:3000 \
+    KOKING_DATABASE_URL=sqlite:///data/koking.db?mode=rwc \
+    KOKING_ALLOWED_ORIGINS=http://127.0.0.1:8080,http://localhost:8080 \
+    RUST_LOG=info
+EXPOSE 3000
+USER koking
+ENTRYPOINT ["/usr/local/bin/koking-server"]

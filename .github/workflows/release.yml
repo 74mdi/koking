@@ -79,7 +79,7 @@ jobs:
           if-no-files-found: error
 
   release:
-    needs: [desktop, debian, android, web]
+    needs: [desktop, debian, android, web, server]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
@@ -214,4 +214,31 @@ jobs:
         with:
           name: signal-alt-web
           path: dist/*.tar.gz
+          if-no-files-found: error
+
+  server:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Swatinem rust-cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: self-hosted-server
+
+      - name: Test and build server
+        run: |
+          cargo test --locked -p koking-server
+          cargo build --locked --release -p koking-server
+          mkdir -p dist
+          cp target/release/koking-server dist/koking-server-linux-amd64
+
+      - name: Upload server binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: koking-server-linux-amd64
+          path: dist/koking-server-linux-amd64
           if-no-files-found: error

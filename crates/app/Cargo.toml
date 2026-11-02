@@ -1,6 +1,6 @@
 [package]
 name = "signal-alt"
-version = "0.1.5"
+version = "0.1.6"
 edition = "2021"
 description = "Koking — private messenger"
 license = "MIT"
@@ -18,6 +18,18 @@ assets = [
 
 [dependencies]
 dioxus = { version = "0.6.3" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+reqwest = { version = "0.12", default-features = false, features = ["json"] }
+url = "2"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+futures-timer = "3"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+gloo-timers = { version = "0.3", features = ["futures"] }
+web-sys = { version = "0.3", features = ["Window", "Storage"] }
 
 [features]
 default = ["web"]

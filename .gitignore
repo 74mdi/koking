@@ -1,5 +1,7 @@
 /target
-Cargo.lock
+*.db
+*.db-shm
+*.db-wal
 **/*.rs.bak
 .idea/
 .vscode/
