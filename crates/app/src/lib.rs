@@ -8,7 +8,7 @@ fn Sidebar() -> Element {
         div { class: "sidebar glass",
             div { class: "brand glass-inner",
                 div { class: "logo-blob" }
-                div { class: "app-title", "Signal Alt" }
+                div { class: "app-title", "Koking" }
                 div { class: "app-sub", "Private messaging" }
             }
             nav { class: "nav",

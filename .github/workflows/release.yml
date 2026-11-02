@@ -171,7 +171,7 @@ jobs:
         run: |
           export NDK_HOME="$ANDROID_HOME/ndk/26.1.10909125"
           cargo install dioxus-cli --version 0.6.3 --locked
-          dx bundle --platform android --package signal-alt -- --no-default-features --features mobile
+          dx bundle --platform android --package signal-alt
           mkdir -p dist
           APK="$(find target -type f -name '*.apk' -print -quit)"
           test -n "$APK"
@@ -203,7 +203,7 @@ jobs:
         shell: bash
         run: |
           cargo install dioxus-cli --version 0.6.3 --locked
-          dx bundle --platform web --package signal-alt -- --no-default-features --features web
+          dx bundle --platform web --package signal-alt
           mkdir -p dist
           WEB_DIR="$(find target/dx -type f -path '*/web/*' -name index.html -print -quit | xargs -r dirname)"
           test -n "$WEB_DIR"

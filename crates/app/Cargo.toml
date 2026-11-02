@@ -2,7 +2,7 @@
 name = "signal-alt"
 version = "0.1.4"
 edition = "2021"
-description = "Signal Alt — private messenger with liquid glass + Material 3 UI"
+description = "Koking — private messenger"
 license = "MIT"
 repository = "https://github.com/74mdi/koking"
 
