@@ -1,0 +1,9 @@
+[application]
+name = "Signal Alt"
+
+[web.app]
+title = "Signal Alt"
+
+[bundle]
+identifier = "com.koking.signalalt"
+publisher = "74mdi"

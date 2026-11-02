@@ -79,7 +79,7 @@ jobs:
           if-no-files-found: error
 
   release:
-    needs: [desktop, debian]
+    needs: [desktop, debian, android, web]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
@@ -139,4 +139,79 @@ jobs:
         with:
           name: signal-alt-debian-amd64
           path: dist/*.deb
+          if-no-files-found: error
+
+  android:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0" "ndk;26.1.10909125"
+
+      - name: Install Rust Android target
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android
+
+      - name: Swatinem rust-cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: android-arm64
+
+      - name: Build Android APK
+        shell: bash
+        run: |
+          export NDK_HOME="$ANDROID_HOME/ndk/26.1.10909125"
+          cargo install dioxus-cli --version 0.6.3 --locked
+          dx bundle --platform android --package signal-alt -- --no-default-features --features mobile
+          mkdir -p dist
+          APK="$(find target -type f -name '*.apk' -print -quit)"
+          test -n "$APK"
+          cp "$APK" dist/signal-alt-android-arm64.apk
+
+      - name: Upload Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: signal-alt-android-arm64
+          path: dist/*.apk
+          if-no-files-found: error
+
+  web:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust WebAssembly target
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Swatinem rust-cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: web-wasm
+
+      - name: Build web bundle
+        shell: bash
+        run: |
+          cargo install dioxus-cli --version 0.6.3 --locked
+          dx bundle --platform web --package signal-alt -- --no-default-features --features web
+          mkdir -p dist
+          WEB_DIR="$(find target/dx -type f -path '*/web/*' -name index.html -print -quit | xargs -r dirname)"
+          test -n "$WEB_DIR"
+          tar czf dist/signal-alt-web.tar.gz -C "$WEB_DIR" .
+
+      - name: Upload web bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: signal-alt-web
+          path: dist/*.tar.gz
           if-no-files-found: error
