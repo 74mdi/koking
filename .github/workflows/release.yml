@@ -21,9 +21,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-24.04
-            target: ''
-            artifact: linux-x86_64-ubuntu24
           - os: macos-latest
             target: x86_64-apple-darwin
             artifact: macos-x86_64
@@ -46,23 +43,6 @@ jobs:
         uses: Swatinem/rust-cache@v2
         with:
           key: ${{ matrix.artifact }}
-
-      - name: Install Linux deps (WebKitGTK)
-        if: runner.os == 'Linux'
-        shell: bash
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libwebkit2gtk-4.1-dev \
-            build-essential \
-            curl \
-            wget \
-            file \
-            libxdo-dev \
-            libssl-dev \
-            libayatana-appindicator3-dev \
-            librsvg2-dev \
-            lld
 
       - name: Build release
         shell: bash
@@ -99,7 +79,7 @@ jobs:
           if-no-files-found: error
 
   release:
-    needs: desktop
+    needs: [desktop, debian]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
@@ -114,3 +94,49 @@ jobs:
           tag_name: ${{ github.ref_name }}
           files: dist/*
           generate_release_notes: true
+
+  debian:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:trixie-slim
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Debian build dependencies
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            build-essential \
+            ca-certificates \
+            curl \
+            file \
+            libwebkit2gtk-4.1-dev \
+            libxdo-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            lld \
+            dpkg-dev
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Swatinem rust-cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: debian-trixie
+
+      - name: Build Debian package
+        run: |
+          cargo build --release -p signal-alt --features desktop
+          cargo install cargo-deb --locked
+          mkdir -p dist
+          cargo deb --no-build -p signal-alt
+          cp target/debian/signal-alt_*.deb dist/
+
+      - name: Upload Debian package
+        uses: actions/upload-artifact@v4
+        with:
+          name: signal-alt-debian-amd64
+          path: dist/*.deb
+          if-no-files-found: error
