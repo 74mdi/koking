@@ -12,6 +12,7 @@ maintainer = "74mdi <97978397+74mdi@users.noreply.github.com>"
 section = "net"
 depends = "$auto, libwebkit2gtk-4.1-0"
 assets = [
+    "$auto",
     ["assets/koking.desktop", "usr/share/applications/koking.desktop", "644"],
 ]
 
